@@ -95,7 +95,11 @@ VALUES
     (3, 'Person 3', 'First 3', 'email3@example.com', 'linkedin.com/person3', 'headshot3.jpg', 'Discord#3', 'Bio 3', '2023-11-01'),
     (4, 'Person 4', 'First 4', 'email4@example.com', 'linkedin.com/person4', 'headshot4.jpg', 'Discord#4', 'Bio 4', '2023-11-02'),
     (5, 'Person 5', 'First 5', 'email5@example.com', 'linkedin.com/person5', 'headshot5.jpg', 'Discord#5', 'Bio 5', '2023-11-03'),
-    (6, 'Person 6', 'First 6', 'email6@example.com', 'linkedin.com/person6', 'headshot6.jpg', 'Discord#6', 'Bio 6', '2023-11-04');
+    (6, 'Person 6', 'First 6', 'email6@example.com', 'linkedin.com/person6', 'headshot6.jpg', 'Discord#6', 'Bio 6', '2023-11-04'),
+    (7, 'Person 7', 'First 7', 'email7@example.com', 'linkedin.com/person7', 'headshot7.jpg', 'Discord#7', 'Bio 7', '2023-11-05'),
+    (8, 'Person 8', 'First 8', 'email8@example.com', 'linkedin.com/person8', 'headshot8.jpg', 'Discord#8', 'Bio 8', '2023-11-06'),
+    (9, 'Person 9', 'First 9', 'email9@example.com', 'linkedin.com/person9', 'headshot9.jpg', 'Discord#9', 'Bio 9', '2023-11-07'),
+    (10, 'Person 10', 'First 10', 'email10@example.com', 'linkedin.com/person10', 'headshot10.jpg', 'Discord#10', 'Bio 10', '2023-11-08');
 
 # Section 6
 # Create peopleskills( id, skills_id, people_id, date_acquired )
