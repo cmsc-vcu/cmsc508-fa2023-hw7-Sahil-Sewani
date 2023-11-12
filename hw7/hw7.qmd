@@ -1,6 +1,6 @@
 ---
 title: Homework 7 - Creating a resume database
-author: (your name goes here!)
+author: Sahil Sewani
 date: last-modified
 format:
     html:
@@ -10,11 +10,9 @@ format:
         code-copy: true
 ---
 
-(include a brief description of what is in this document)
+This is the homework assignment 7. We are creating a database using DDL.
 
-(Please clean up any comments that I included.  This is a scaffold document.)
-
-GITHUB URL:  <your URL goes here!>
+GITHUB URL:  <https://github.com/cmsc-vcu/cmsc508-fa2023-hw7-Sahil-Sewani>
 
 ```{python}
 #| eval: true
@@ -92,12 +90,11 @@ except Exception as e:
 
 ## Overview and description
 
-(briefly describe the project and the database)
+This database appears to be designed for managing information about people, their skills, and roles within a system or organization. The database is designed to capture relationships between people and skills, as well as the roles assigned to each person. The use of foreign keys ensures data integrity and establishes connections between related information. 
 
 ## Crows-foot diagram
 
-(add a description of the diagram and what the reader is seeing.)
-
+This diagram models a scenario where a customer can place multiple orders, and each order is associated with one customer. Additionally, a customer can use multiple delivery addresses, but each delivery address is associated with one customer.
 ```{mermaid}
 %%| echo: false
 erDiagram
@@ -119,7 +116,7 @@ For the people, skills, and roles tables, provide a description of each table an
 
 ### People table
 
-The *people* table contains elements that describe ... 
+The people table describes information about individuals or persons. These elements collectively provide a comprehensive set of information about each individual in the people table, including personal details, contact information, and relevant dates.   
 
 Below is a list of data in the *people* table.
 
@@ -142,30 +139,49 @@ df
 
 ### Skills table
 
-The *skills* table contains elements that describe ... 
+These elements collectively provide information about different skills, including their names, descriptions, categories, associated URLs, and an estimate of the time required to acquire them.  
 
 Below is a list of data in the *skills* table.
 
 ```{python}
 #| echo: false
 #| eval: true
-
+sql = f"""
+select * from skills;
+"""
 ## Add code to list roles table here
+try:
+    df = pd.read_sql(sql,cnx)
+    df
+except Exception as e:
+    message = str(e)
+    print(f"An error occurred:\n\n{message}\n\nIgnoring and moving on.")
+    df = pd.DataFrame()
+df
 ```
 
 ### Roles table
 
-The *roles* table contains elements that describe ... 
+The roles table describes information about various roles within a system or organization. These elements collectively provide information about different roles within the system, including their names and the assigned sort priority for ordering. The primary key ensures each role is uniquely identified in the table.
 
 Below is a list of data in the *roles* table.
 
 ```{python}
 #| echo: false
 #| eval: true
-
+sql = f"""
+select * from roles;
+"""
 ## Add code to list roles table here
+try:
+    df = pd.read_sql(sql,cnx)
+    df
+except Exception as e:
+    message = str(e)
+    print(f"An error occurred:\n\n{message}\n\nIgnoring and moving on.")
+    df = pd.DataFrame()
+df
 ```
-
 
 ## Sample queries
 
@@ -173,7 +189,7 @@ Let's explore the database!
 
 # List skill names, tags, and descriptions ordered by name
 
-(here a sample query)
+here a sample query
 
 ```{python}
 sql = f"""
@@ -182,7 +198,7 @@ select * from people
 ```
 
 
-(and here is a sample result from the query)
+and here is a sample result from the query
 
 ```{python}
 #| echo: false
@@ -201,29 +217,183 @@ df
 
 ### List people names and email addresses ordered by last_name
 
+```{python}
+#| echo: false
+#| eval: true
+sql = f"""
+SELECT people_first_name, people_last_name, people_email
+FROM people
+ORDER BY people_last_name;
+"""
+## Add code to list roles table here
+try:
+    df = pd.read_sql(sql,cnx)
+    df
+except Exception as e:
+    message = str(e)
+    print(f"An error occurred:\n\n{message}\n\nIgnoring and moving on.")
+    df = pd.DataFrame()
+df
+```
+
 
 ### List skill names of Person 1
 
 
+```{python}
+#| echo: false
+#| eval: true
+sql = f"""
+SELECT s.skills_name
+FROM peopleskills ps
+JOIN skills s ON ps.skills_id = s.skills_id
+WHERE ps.people_id = 1;
+"""
+## Add code to list roles table here
+try:
+    df = pd.read_sql(sql,cnx)
+    df
+except Exception as e:
+    message = str(e)
+    print(f"An error occurred:\n\n{message}\n\nIgnoring and moving on.")
+    df = pd.DataFrame()
+df
+```
+
+
 ### List people names with Skill 6
 
+```{python}
+#| echo: false
+#| eval: true
+sql = f"""
+SELECT p.people_first_name, p.people_last_name
+FROM peopleskills ps
+JOIN people p ON ps.people_id = p.people_id
+WHERE ps.skills_id = 6;
+"""
+## Add code to list roles table here
+try:
+    df = pd.read_sql(sql,cnx)
+    df
+except Exception as e:
+    message = str(e)
+    print(f"An error occurred:\n\n{message}\n\nIgnoring and moving on.")
+    df = pd.DataFrame()
+df
+```
 
 ### List people with a DEVELOPER role
 
+```{python}
+#| echo: false
+#| eval: true
+sql = f"""
+SELECT p.people_first_name, p.people_last_name
+FROM peopleroles pr
+JOIN people p ON pr.people_id = p.people_id
+JOIN roles r ON pr.role_id = r.roles_id
+WHERE r.roles_name = 'DEVELOPER';
+"""
+## Add code to list roles table here
+try:
+    df = pd.read_sql(sql,cnx)
+    df
+except Exception as e:
+    message = str(e)
+    print(f"An error occurred:\n\n{message}\n\nIgnoring and moving on.")
+    df = pd.DataFrame()
+df
+```
 
 ### List names and email addresses of people without skills
 
+```{python}
+#| echo: false
+#| eval: true
+sql = f"""
+SELECT people_first_name, people_last_name, people_email
+FROM people
+WHERE people_id NOT IN (SELECT DISTINCT people_id FROM peopleskills);
+"""
+## Add code to list roles table here
+try:
+    df = pd.read_sql(sql,cnx)
+    df
+except Exception as e:
+    message = str(e)
+    print(f"An error occurred:\n\n{message}\n\nIgnoring and moving on.")
+    df = pd.DataFrame()
+df
+```
 
 ### List names and tags of unused skills
 
+```{python}
+#| echo: false
+#| eval: true
+sql = f"""
+SELECT skills_name, skills_tag
+FROM skills
+WHERE skills_id NOT IN (SELECT DISTINCT skills_id FROM peopleskills);
+"""
+## Add code to list roles table here
+try:
+    df = pd.read_sql(sql,cnx)
+    df
+except Exception as e:
+    message = str(e)
+    print(f"An error occurred:\n\n{message}\n\nIgnoring and moving on.")
+    df = pd.DataFrame()
+df
+```
 
 ### List people names and skill names with the BOSS role
 
+```{python}
+#| echo: false
+#| eval: true
+sql = f"""
+SELECT p.people_first_name, p.people_last_name
+FROM peopleroles pr
+JOIN people p ON pr.people_id = p.people_id
+JOIN roles r ON pr.role_id = r.roles_id
+WHERE r.roles_name = 'BOSS';
+"""
+## Add code to list roles table here
+try:
+    df = pd.read_sql(sql,cnx)
+    df
+except Exception as e:
+    message = str(e)
+    print(f"An error occurred:\n\n{message}\n\nIgnoring and moving on.")
+    df = pd.DataFrame()
+df
+```
 
 ### List ids and names of unused roles
+
+```{python}
+#| echo: false
+#| eval: true
+sql = f"""
+SELECT roles_id, roles_name
+FROM roles
+WHERE roles_id NOT IN (SELECT DISTINCT role_id FROM peopleroles);
+"""
+## Add code to list roles table here
+try:
+    df = pd.read_sql(sql,cnx)
+    df
+except Exception as e:
+    message = str(e)
+    print(f"An error occurred:\n\n{message}\n\nIgnoring and moving on.")
+    df = pd.DataFrame()
+df
+```
 
 
 ## Reflection
 
-(Write a paragraph expressing your thoughts, feelings, and insights about your experience with this assignment.  Pause and breath before writing - I'm trying to encourage critical thinking and self-awareness while allowing you to explore the connections between theory and practice. And yes, delete this paragraph.)
+This assignment was pretty hands-on, getting into the details of database design and management. We tackled tasks like creating tables, setting up relationships, and adding data, which felt like rolling up our sleeves and doing the real work. Figuring out things like foreign key constraints and column problems was a bit of a puzzle, but it's the kind of problem-solving that comes with the territory. Overall, it's been a practical journey in refining how we structure databases and dealing with the ins and outs of managing them. It's the sort of thing that makes the theory we've learned more tangible. I appreciate Dr. Leanord for all his assisstance to carry out this assignment. 
 
